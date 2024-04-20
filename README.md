@@ -267,3 +267,53 @@ Thus Diffie–Hellman key exchange algorithm is implemented successfully.
 
 
 -------------------------------------------------
+
+# IMPLEMENTATION OF AES
+# AIM:
+To use Advanced Encryption Standard (AES) Algorithm for a practical application like URL Encryption.
+
+# ALGORITHM:
+AES is based on a design principle known as a substitution–permutation.
+AES does not use a Feistel network like DES, it uses variant of Rijndael.
+It has a fixed block size of 128 bits, and a key size of 128, 192, or 256 bits.
+AES operates on a 4 × 4 column-major order array of bytes, termed the state
+# PROGRAM:
+# AES.py
+```
+from Crypto.Cipher import AES
+from Crypto.Hash import SHA1
+from Crypto.Util.Padding import pad, unpad
+import base64
+
+def encrypt_AES(text, key):
+    key = SHA1.new(key.encode()).digest()[:16]
+    cipher = AES.new(key, AES.MODE_ECB)
+    return base64.b64encode(cipher.encrypt(pad(text.encode(), AES.block_size))).decode()
+
+def decrypt_AES(encrypted_text, key):
+    key = SHA1.new(key.encode()).digest()[:16]
+    cipher = AES.new(key, AES.MODE_ECB)
+    return unpad(cipher.decrypt(base64.b64decode(encrypted_text)), AES.block_size).decode()
+
+def main():
+    secret_key = "annaUniversity"
+    original_string = "www.annauniv.edu"
+    
+    encrypted_string = encrypt_AES(original_string, secret_key)
+    decrypted_string = decrypt_AES(encrypted_string, secret_key)
+    
+    print("URL Encryption Using AES Algorithm\n------------")
+    print("Original URL :", original_string)
+    print("Encrypted URL :", encrypted_string)
+    print("Decrypted URL :", decrypted_string)
+
+if __name__ == "__main__":
+    main()
+```
+
+# OUTPUT:
+![image](https://github.com/smriti1910/19CS412---CRYPTOGRAPHY---ADVANCED-ENCRYPTION/assets/133334803/54af5b1e-4bf8-4ec3-8d1a-54027f232c12)
+
+
+# RESULT:
+	Thus AES algorithm was implemented successfully.
